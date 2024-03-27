@@ -1,5 +1,17 @@
 # CashPay
 
+## Download
+https://github.com/7ychu5/counterstrikesharp_plugins/blob/main/CashPay/bin/Debug/net7.0/CashPay.deps.json
+https://github.com/7ychu5/counterstrikesharp_plugins/blob/main/CashPay/bin/Debug/net7.0/CashPay.dll
+https://github.com/7ychu5/counterstrikesharp_plugins/blob/main/CashPay/bin/Debug/net7.0/CashPay.pdb
+    
+    download upon three file,
+    put them in a new folder
+    put folder in your games addons,
+>csgo/addons/counterstrikesharp/plugins/\<new folder>
+    
+
+
 ## Description
     A mini plugin for
     Players pay Cash or Stolen cash from other player IN GAME.
