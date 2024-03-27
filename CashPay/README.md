@@ -31,3 +31,7 @@ https://github.com/7ychu5/counterstrikesharp_plugins/blob/main/CashPay/bin/Debug
 ### Tips
 
 If you want to compile by yourself,use `net 7.0`.  
+
+### credits
+
+-[Krotyz](https://github.com/Kroytz) for guild me.
