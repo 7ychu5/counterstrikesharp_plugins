@@ -1,0 +1,12 @@
+D:\source_plugins\CSsharp\plugins\helloworld\HelloWorldPlugin\bin\Debug\net7.0\HelloWorldPlugin.deps.json
+D:\source_plugins\CSsharp\plugins\helloworld\HelloWorldPlugin\bin\Debug\net7.0\HelloWorldPlugin.dll
+D:\source_plugins\CSsharp\plugins\helloworld\HelloWorldPlugin\bin\Debug\net7.0\HelloWorldPlugin.pdb
+D:\source_plugins\CSsharp\plugins\helloworld\HelloWorldPlugin\obj\Debug\net7.0\HelloWorldPlugin.csproj.AssemblyReference.cache
+D:\source_plugins\CSsharp\plugins\helloworld\HelloWorldPlugin\obj\Debug\net7.0\HelloWorldPlugin.GeneratedMSBuildEditorConfig.editorconfig
+D:\source_plugins\CSsharp\plugins\helloworld\HelloWorldPlugin\obj\Debug\net7.0\HelloWorldPlugin.AssemblyInfoInputs.cache
+D:\source_plugins\CSsharp\plugins\helloworld\HelloWorldPlugin\obj\Debug\net7.0\HelloWorldPlugin.AssemblyInfo.cs
+D:\source_plugins\CSsharp\plugins\helloworld\HelloWorldPlugin\obj\Debug\net7.0\HelloWorldPlugin.csproj.CoreCompileInputs.cache
+D:\source_plugins\CSsharp\plugins\helloworld\HelloWorldPlugin\obj\Debug\net7.0\HelloWorldPlugin.dll
+D:\source_plugins\CSsharp\plugins\helloworld\HelloWorldPlugin\obj\Debug\net7.0\refint\HelloWorldPlugin.dll
+D:\source_plugins\CSsharp\plugins\helloworld\HelloWorldPlugin\obj\Debug\net7.0\HelloWorldPlugin.pdb
+D:\source_plugins\CSsharp\plugins\helloworld\HelloWorldPlugin\obj\Debug\net7.0\ref\HelloWorldPlugin.dll

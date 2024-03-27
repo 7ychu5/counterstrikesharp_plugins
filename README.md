@@ -1,0 +1,2 @@
+# counterstrikesharp_plugins
+ counterstrikesharp_plugins
