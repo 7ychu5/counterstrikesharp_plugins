@@ -49,3 +49,4 @@ D:\source_plugins\CSsharp\counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\Ca
 D:\source_plugins\CSsharp\counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\refint\CashPay.dll
 D:\source_plugins\CSsharp\counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\CashPay.pdb
 D:\source_plugins\CSsharp\counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\ref\CashPay.dll
+D:\source_plugins\CSsharp\counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\CashPay.sourcelink.json

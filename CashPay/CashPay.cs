@@ -20,6 +20,8 @@ public class cashpay : BasePlugin
 
     public static bool PayToggle = true;
 
+    public static bool PaySteal = true;
+
     //public static bool PayLimit = true;
     public override void Load(bool hotReload)
     {
@@ -58,7 +60,8 @@ public class cashpay : BasePlugin
             if (victim.PlayerPawn.Value is null) return HookResult.Continue;
 
             if(host.PlayerPawn.Value.TeamNum != victim.PlayerPawn.Value.TeamNum){
-                Pay(host,victim,-50);
+                if(PaySteal)    Pay(host,victim,-50);
+                else return HookResult.Continue;
             }
             else{
                 Pay(host,victim,100);
@@ -149,6 +152,17 @@ public class cashpay : BasePlugin
         PayToggle = !PayToggle;
         if(PayToggle) Server.PrintToChatAll(ModuleName+"CashPay Plugin TurnON");
         else Server.PrintToChatAll(ModuleName+"CashPay Plugin TurnOff");
+        return;
+    }
+
+    [ConsoleCommand("css_pay_steal", "Toggle the steal switch of the plugin")]
+    [RequiresPermissions("@css/admin")]
+    //[CommandHelper(minArgs: 0, usage: "[toggle]", whoCanExecute: CommandUsage.CLIENT_AND_SERVER)]
+    public void OnPaySteal(CCSPlayerController? player, CommandInfo commandInfo)
+    {
+        PaySteal = !PaySteal;
+        if(PaySteal) Server.PrintToChatAll(ModuleName+"Steal function TurnON");
+        else Server.PrintToChatAll(ModuleName+"Steal function TurnOff");
         return;
     }
 
