@@ -25,7 +25,7 @@ https://github.com/7ychu5/counterstrikesharp_plugins/blob/main/CashPay/bin/Debug
 - css_pay <userid> <cashnum>                    - User Pay to <userid> <cashnum>
 - css_pay_force <userid1> <userid2> <cashnum>   - <userid1> Pay to <userid2> <cashnum>  //@css/admin
 - css_toggle                                    - Switch the plugin On or Off           //@css/admin
-- css_pay_steal                                 - Switch you can steal enemy money      //@css/admin
+- css_pay_steal <0/1/2>                         - 0 means u can steal live or dead      //@css/admin
 ```
 
 ### Tips
