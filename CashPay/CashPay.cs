@@ -199,11 +199,6 @@ public class CashPay : BasePlugin
             return;
         }
 
-        foreach (CCSPlayerController target in players)
-        {
-            target.VoiceFlags = VoiceFlags.Muted;
-        }
-
         var _cashnum = commandInfo.GetArg(2);
         int cashnum = Int32.Parse(_cashnum);
 
