@@ -35,3 +35,5 @@ If you want to compile by yourself,use `net 7.0`.
 ### credits
 
 -[Krotyz](https://github.com/Kroytz) for guild me.
+
+-[CS2SimpleAdmin](https://github.com/daffyyyy/CS2-SimpleAdmin) for fuzzy logic function reference.

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zm8Rp4G3XJkwAPY3a0uapjFbdxNpnDkHkIlkDgRtcsdJCUBYQ0a6kEffybOlJRYTf+ByqoHAsD78cYH4Ksm+4Q==",
+  "dgSpecHash": "VGuidupvzUc54kaebyujFGAuzmcSnYlWkfpJbZCllcnYGe8eRZeg/bxAsyBOIq/aZLPmh0aulS+RQUaVUUr3HQ==",
   "success": true,
-  "projectFilePath": "D:\\source_plugins\\CSsharp\\counterstrikesharp_plugins\\CashPay\\CashPay.csproj",
+  "projectFilePath": "D:\\source_plugins\\CSsharp\\counterstrikesharp_plugins\\cashpay\\CashPay.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
