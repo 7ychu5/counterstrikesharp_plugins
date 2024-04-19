@@ -10,13 +10,14 @@ using CounterStrikeSharp.API.Modules.Commands;
 using System.Numerics;
 using Vector = CounterStrikeSharp.API.Modules.Utils.Vector;
 using CounterStrikeSharp.API.Modules.Commands.Targeting;
+using CounterStrikeSharp.API.Modules.Entities;
 
 namespace cashpay;
 
 public class CashPay : BasePlugin
 {
-    public override string ModuleName => "[CashPay]";
-    public override string ModuleVersion => "0.0.2";
+    public override string ModuleName => "CashPay";
+    public override string ModuleVersion => "0.0.3";
     public override string ModuleAuthor => "7ychu5";
     public override string ModuleDescription => "Pay your game cash to the other player";
 
@@ -35,43 +36,51 @@ public class CashPay : BasePlugin
             origin.Z = @event.Z;
 
             double min_distance = 64.0;
+
+            var host = @event.Userid;
+            if (host.PlayerPawn.Value is null) return HookResult.Continue;
+
             CCSPlayerController? victim = null;
 
-            var playerEntities = Utilities.GetPlayers().Where(players => players.Team >= CsTeam.Terrorist).ToList();
+            var playerEntities = Utilities.GetPlayers().Where(players => players.Team >= CsTeam.Terrorist && players.Connected == PlayerConnectedState.PlayerConnected && players.IsValid).ToList();
 
             foreach (var player in playerEntities)
             {
+                if (player == host) continue;
+                if (player.PlayerPawn == null || player.PlayerPawn.Value == null || !player.PlayerPawn.IsValid) continue;
                 var pawn = player.PlayerPawn.Value;
-                if (pawn is null) continue;
                 Vector? ply_origin = pawn.AbsOrigin;
                 if (ply_origin is null) continue;
+
                 Vector3 v3_origin;
                 v3_origin.X = ply_origin.X;
                 v3_origin.Y = ply_origin.Y;
                 v3_origin.Z = ply_origin.Z;
-                if (Distance3D(v3_origin, origin) <= min_distance){
+
+                if (Distance3D(v3_origin, origin) <= min_distance)
+                {
                     min_distance = Distance3D(v3_origin, origin);
                     victim = player;
                 }
             }
 
-            var host = @event.Userid;
+            if (victim is null || victim.PlayerPawn.Value is null || !victim.PlayerPawn.IsValid) return HookResult.Continue;
 
-            if (host.PlayerPawn.Value is null) return HookResult.Continue;
-            if (victim is null) return HookResult.Continue;
-            if (victim.PlayerPawn.Value is null) return HookResult.Continue;
-
-            if(host.PlayerPawn.Value.TeamNum != victim.PlayerPawn.Value.TeamNum){
-                if(PaySteal == 0) Pay(host,victim,-50);
-                else if (PaySteal == 1){
-                    if(victim.PlayerPawn.Value.Health > 0) Pay(host,victim,-50);
+            if (host.PlayerPawn.Value.TeamNum != victim.PlayerPawn.Value.TeamNum)
+            {
+                if (PaySteal == 0) Pay(host, victim, -50);
+                else if (PaySteal == 1)
+                {
+                    if (victim.PlayerPawn.Value.Health > 0) Pay(host, victim, -50);
                 }
-                else if (PaySteal == 2){
-                    if(victim.PlayerPawn.Value.Health <= 0) Pay(host,victim,-50);
+                else if (PaySteal == 2)
+                {
+                    if (victim.PlayerPawn.Value.Health <= 0) Pay(host, victim, -50);
                 }
             }
-            else{
-                Pay(host,victim,100);
+            else
+            {
+                Pay(host, victim, 100);
             }
 
             return HookResult.Continue;
@@ -233,36 +242,46 @@ public class CashPay : BasePlugin
     [CommandHelper(minArgs: 3, usage: "[userid1],[userid2],[cashnum]", whoCanExecute: CommandUsage.CLIENT_AND_SERVER)]
     public void OnPayForce(CCSPlayerController? player, CommandInfo commandInfo)
     {
-        var _userid = commandInfo.GetArg(1);
-        var _userid_2 = commandInfo.GetArg(2);
-        var _cashnum = commandInfo.GetArg(3);
-        int userid = Int32.Parse(_userid);
-        int userid_2 = Int32.Parse(_userid_2);
-        int cashnum = Int32.Parse(_cashnum);
+        (List<CCSPlayerController> givers, string givername) = FindTarget(player, commandInfo, 1, false, false, MultipleFlags.NORMAL);
+        (List<CCSPlayerController> receivers, string receivername) = FindTarget(player, commandInfo, 2, false, false, MultipleFlags.NORMAL);
 
-        player = Utilities.GetPlayerFromUserid(userid);
-        var victim = Utilities.GetPlayerFromUserid(userid_2);
-
-        if (player == null
-            ||victim == null
-            ||player.InGameMoneyServices == null
-            ||victim.InGameMoneyServices == null
-            || player.PlayerPawn.Value == null
-            || !player.PlayerPawn.Value.IsValid
-            || player.PlayerPawn.Value.Health <= 0
-            || victim.PlayerPawn.Value == null
-            || !victim.PlayerPawn.Value.IsValid
-            || victim.PlayerPawn.Value.Health <= 0) return;
-
-        if(cashnum <= 0){
-            player.ExecuteClientCommand($"play sounds/ui/armsrace_level_down.vsnd");
-            player.PrintToCenter("Get More Money First");
+        if (givers.Count == 0 || receivers.Count == 0)
+        {
             return;
         }
 
-        if(cashnum >= player.InGameMoneyServices.Account) cashnum = player.InGameMoneyServices.Account;
+        var _cashnum = commandInfo.GetArg(3);
+        int cashnum = Int32.Parse(_cashnum);
 
-        Pay(player,victim,cashnum);
+        foreach (CCSPlayerController giver in givers)
+        {
+            foreach (CCSPlayerController victim in receivers)
+            {
+                if (giver == null
+                || victim == null
+                || giver.InGameMoneyServices == null
+                || victim.InGameMoneyServices == null
+                || giver.PlayerPawn.Value == null
+                || !giver.PlayerPawn.Value.IsValid
+                || giver.PlayerPawn.Value.Health <= 0
+                || victim.PlayerPawn.Value == null
+                || !victim.PlayerPawn.Value.IsValid
+                || victim.PlayerPawn.Value.Health <= 0) return;
+
+                if (cashnum <= 0)
+                {
+                    giver.ExecuteClientCommand($"play sounds/ui/armsrace_level_down.vsnd");
+                    giver.PrintToCenter("Get More Money First");
+                    return;
+                }
+
+                if (cashnum >= giver.InGameMoneyServices.Account)
+                    cashnum = giver.InGameMoneyServices.Account;
+
+                Pay(giver, victim, cashnum);
+            }
+
+        }
 
         return;
     }
@@ -274,59 +293,66 @@ public class CashPay : BasePlugin
     public void OnPayToggle(CCSPlayerController? player, CommandInfo commandInfo)
     {
         PayToggle = !PayToggle;
-        if(PayToggle) Server.PrintToChatAll(ModuleName+"CashPay Plugin TurnON");
-        else Server.PrintToChatAll(ModuleName+"CashPay Plugin TurnOff");
+        if (PayToggle) Server.PrintToChatAll(ModuleName + $"CashPay Plugin now {ChatColors.Green}ON");
+        else Server.PrintToChatAll(ModuleName + $"CashPay Plugin now {ChatColors.DarkRed}Off");
         return;
     }
 
     [ConsoleCommand("css_pay_steal", "Toggle the steal switch of the plugin")]
     [RequiresPermissions("@css/admin")]
     [CommandHelper(minArgs: 1, usage: "[toggle]", whoCanExecute: CommandUsage.CLIENT_AND_SERVER)]
-    public void OnPaySteal(CCSPlayerController? player, CommandInfo commandInfo)
+    public void OnPayStealSwitch(CCSPlayerController? player, CommandInfo commandInfo)
     {
-        var temp = commandInfo.GetArg(1);
-        if(temp != "0" || temp != "1" || temp != "2") temp = "0";
+        var temp = commandInfo.ArgByIndex(1);
         PaySteal = Int32.Parse(temp);
-        switch(PaySteal)
+        if (PaySteal < 0 || PaySteal > 3) PaySteal = 0;
+        switch (PaySteal)
         {
-            case 0: Server.PrintToChatAll(ModuleName+"You Can Steal live or dead.");break;
-            case 1: Server.PrintToChatAll(ModuleName+"You Can Steal only live.");break;
-            case 2: Server.PrintToChatAll(ModuleName+"You Can Steal only dead.");break;
+            case 0: Server.PrintToChatAll(ModuleName + " You can now steal EVERYONE."); break;
+            case 1: Server.PrintToChatAll(ModuleName + " You can now steal only ALIVE PLAYERS."); break;
+            case 2: Server.PrintToChatAll(ModuleName + " You can now steal only DEAD PLAYERS."); break;
+            case 3: Server.PrintToChatAll(ModuleName + " You CAN'T steal anyone now."); break;
         }
-        return;
     }
 
-    public void Pay(CCSPlayerController player, CCSPlayerController victim , int cashnum)
+    public void Pay(CCSPlayerController player, CCSPlayerController victim, int cashnum)
     {
-        if(!PayToggle){
+        if (!PayToggle)
+        {
             player.ExecuteClientCommand($"play sounds/ui/menu_invalid.vsnd");
             player.PrintToCenter("CashPay Plugin had been TurnOff");
             return;
         }
-        
+
         if (victim.InGameMoneyServices is null) return;
         if (player.InGameMoneyServices is null) return;
 
-        if(cashnum > 0 && cashnum >= player.InGameMoneyServices.Account) cashnum = player.InGameMoneyServices.Account;
-        if(cashnum < 0 && cashnum*-1 >= victim.InGameMoneyServices.Account) cashnum = (victim.InGameMoneyServices.Account*-1);
+        if (cashnum > 0 && cashnum >= player.InGameMoneyServices.Account) cashnum = player.InGameMoneyServices.Account;
+        if (cashnum < 0 && cashnum * -1 >= victim.InGameMoneyServices.Account) cashnum = (victim.InGameMoneyServices.Account * -1);
 
-        if(cashnum == 0){
-            if(victim.InGameMoneyServices.Account == 0) victim.PrintToCenter("You have been bankruptcy !");
-            if(player.InGameMoneyServices.Account == 0) player.PrintToCenter("You got no money !");
+        if (cashnum == 0)
+        {
+            if (victim.InGameMoneyServices.Account == 0)
+            {
+                victim.PrintToCenter("You have been bankruptcy!");
+                player.PrintToCenter("You got no money!");
+            }
             return;
-        } 
+        }
 
         player.InGameMoneyServices.Account -= cashnum;
         victim.InGameMoneyServices.Account += cashnum;
         player.ExecuteClientCommand($"play sounds/ui/armsrace_level_up_e.vsnd");
         victim.ExecuteClientCommand($"play sounds/ui/armsrace_level_up_e.vsnd");
-        if(cashnum > 0){
-            player.PrintToCenter("Pay " + victim.PlayerName.ToString() + " $"+ cashnum.ToString());
-            victim.PrintToCenter("Receive " + player.PlayerName.ToString() + " $"+ cashnum.ToString());
+        if (cashnum > 0)
+        {
+            player.PrintToCenter($"Pay {victim.PlayerName} ${cashnum}");
+            victim.PrintToCenter($"Receive ${cashnum} from {player.PlayerName}");
         }
-        else{
-            victim.PrintToCenter("Stolen by " + player.PlayerName.ToString() + " $"+ (cashnum*-1).ToString());
-            player.PrintToCenter("Steal from " + victim.PlayerName.ToString() + " $"+ (cashnum*-1).ToString());
+        else
+        {
+            victim.PrintToCenter($"${cashnum * -1} stolen by {player.PlayerName}");
+            player.PrintToCenter($"Steal {victim.PlayerName} ${cashnum * -1}");
         }
 
         Utilities.SetStateChanged(player, "CCSPlayerController", "m_pInGameMoneyServices");
@@ -335,9 +361,9 @@ public class CashPay : BasePlugin
 
     private static double Distance3D(Vector3 vec1, Vector3 vec2)
     {
-        var a = Math.Pow(vec2.X - vec1.X,2);
-        var b = Math.Pow(vec2.Y - vec1.Y,2);
-        var c = Math.Pow(vec2.Z - vec1.Z,2);
-        return Math.Sqrt(a+b+c);
+        var a = Math.Pow(vec2.X - vec1.X, 2);
+        var b = Math.Pow(vec2.Y - vec1.Y, 2);
+        var c = Math.Pow(vec2.Z - vec1.Z, 2);
+        return Math.Sqrt(a + b + c);
     }
 }

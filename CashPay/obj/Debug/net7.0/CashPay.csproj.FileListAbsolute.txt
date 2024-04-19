@@ -50,3 +50,16 @@ D:\source_plugins\CSsharp\counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\re
 D:\source_plugins\CSsharp\counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\CashPay.pdb
 D:\source_plugins\CSsharp\counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\ref\CashPay.dll
 D:\source_plugins\CSsharp\counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\CashPay.sourcelink.json
+D:\CSSharpDev\7ychu5_counterstrikesharp_plugins\CashPay\bin\Debug\net7.0\CashPay.deps.json
+D:\CSSharpDev\7ychu5_counterstrikesharp_plugins\CashPay\bin\Debug\net7.0\CashPay.dll
+D:\CSSharpDev\7ychu5_counterstrikesharp_plugins\CashPay\bin\Debug\net7.0\CashPay.pdb
+D:\CSSharpDev\7ychu5_counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\CashPay.csproj.AssemblyReference.cache
+D:\CSSharpDev\7ychu5_counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\CashPay.GeneratedMSBuildEditorConfig.editorconfig
+D:\CSSharpDev\7ychu5_counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\CashPay.AssemblyInfoInputs.cache
+D:\CSSharpDev\7ychu5_counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\CashPay.AssemblyInfo.cs
+D:\CSSharpDev\7ychu5_counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\CashPay.csproj.CoreCompileInputs.cache
+D:\CSSharpDev\7ychu5_counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\CashPay.sourcelink.json
+D:\CSSharpDev\7ychu5_counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\CashPay.dll
+D:\CSSharpDev\7ychu5_counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\refint\CashPay.dll
+D:\CSSharpDev\7ychu5_counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\CashPay.pdb
+D:\CSSharpDev\7ychu5_counterstrikesharp_plugins\CashPay\obj\Debug\net7.0\ref\CashPay.dll
